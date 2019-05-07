@@ -61,7 +61,7 @@ let page = {
         
         that.$labelDom = $('.home-list-label')
         that.$labelDom.css({
-            top: that.wH * 0.5 * 1.5 + 'px'
+            top: that.wH * 0.5 * 1.6 + 'px'
         })
 
         //  右侧product
