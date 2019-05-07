@@ -1,0 +1,10 @@
+
+
+@font-face {
+    font-family: 'FatCat';
+    src: url('../font/FatCat.ttf');
+}
+    
+.home-menu>li{
+    font-family: 'FatCat';
+}

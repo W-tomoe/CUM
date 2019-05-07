@@ -1,0 +1,265 @@
+@import '../../assets/css/reset.css';
+@import '../../assets/css/base.css';
+@import '../../assets/css/common.css';
+
+$do:#e8beab;
+$re:#f5c240;
+$mi:#f6863a;
+$fa:#d73a48;
+$so:#93514b;
+$la:#3d7e4d;
+$ti:#039d4d;
+$active: #005479;
+
+body{
+    height: 100vh;
+    background: url(../../assets/images/home-bg.png) no-repeat;
+    background-size: 13.1rem 10.8rem;
+    background-position: right center;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo{
+    width: 1.2rem;
+    height: .93rem;
+    position: absolute;
+    top:.35rem;
+    left: .30rem;
+    background: url(../../assets/images/logo.png) no-repeat;
+    background-size: 1.2rem .93rem;
+}
+
+.menu-button{
+    position: absolute;
+    top: 25px;
+    left: 100vw;
+    margin-left: -55px;
+    width: 28px;
+    height: 28px;
+    z-index: 3;
+    cursor: pointer;
+    .menu-button__line {
+        position: absolute;
+        width: 22px;
+        height: 2px;
+        background-color: $active;
+        transition: background-color .5s linear;
+        &:nth-child(1) {
+            transform-origin: 0 0;
+        }
+        &:nth-child(3) {
+            transform-origin: 0 100%;
+        }
+    }
+}
+
+.home-menu {
+    position: absolute;
+    top:.45rem;
+    left: 1.8rem;
+    li{
+        position: relative;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: all 1s linear;
+        a{
+            transition: all 1s linear;
+        }
+        .overlay{
+            position: absolute;
+            font-size: .16rem;
+            color:white;
+            border-radius: 4px;
+            white-space: nowrap;
+            right: -130%;
+            padding:3px;
+            top:50%;
+            transform: translateY(-50%);
+            /* &::after{
+                display: block;
+                content: ' ';
+                top:0;
+                left: 0;
+                width:0;
+                height:0;
+                border-width:30px 30px 30px 0;
+                border-style:solid;
+                border-color:transparent #333 transparent transparent;
+                position:relative;
+            } */
+        }
+        &:hover a{
+            color:$active;
+        }
+    }
+    .do{
+        color:$do;
+        .overlay{
+            background: $do;
+            
+        }
+    }
+    .re{
+        color:$re;
+        .overlay{
+            background: $re;
+            
+        }
+    }
+    .mi{
+        color:$mi;
+        .overlay{
+            background: $mi;
+            
+        }
+    }
+    .fa{
+        color:$fa;
+        .overlay{
+            background: $fa;
+            
+        }
+    }
+    .so{
+        color:$so;
+        .overlay{
+            background: $so;
+            
+        }
+    }
+    .la{
+        color:$la;
+        .overlay{
+            background: $la;
+            
+        }
+    }
+    .ti{
+        color:$ti;
+        .overlay{
+            background: $ti;
+            
+        }
+    }
+
+}
+
+.menu{
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 2;
+    position: fixed;
+    display: block;
+    background: linear-gradient(to bottom,#005579 10%,#029ed6 90%);
+    .menu-logo{
+        position: absolute;
+        display: inline-block;
+        top:7vh;
+        left: 50%;
+        height: 30vh;
+        transform: translateX(-50%);
+        img{
+            height: 100%;
+        }
+    }
+
+    .left-content{
+        position: absolute;
+        top:46vh;
+        left: 2.82rem;
+        width: 5.95rem;
+        color:white;
+    }
+
+    .title{
+        font-size: 3vh;
+    }
+    .content{
+        padding-top: 2.8vh;
+        font-size: 1.8vh;
+        line-height: 2.5vh;
+        word-break:break-all;
+    }
+
+    .right-content{
+        position: absolute;
+        top:46vh;
+        right: 2.82rem;
+        width: 5.95rem;
+        color:white;
+    }
+
+    .third-party-container{
+        position: absolute;
+        bottom: 13vh;
+        left: 50%;
+        transform: translateX(-50%);
+        .third-party__item{
+            display: inline-block;
+            width: .75rem;
+            height: .75rem;
+            img{
+                width: 100%;
+            }
+        }
+    }
+}
+
+.home-list-label {
+    position: absolute;
+    font-size: 1.65vh;
+    left: .8rem;
+    color:$active;
+    transform: rotate(-90deg);
+    transform-origin: top left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+
+.album-slideshow-container{
+    position: absolute;
+    right: 0;
+    transition: right 1s ease-in-out;
+    img{
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        &.show{
+            opacity: 1;
+        }
+    }
+}
+
+
+
+.album-slideshow__label{
+    user-select: none;
+    position: absolute;
+    bottom: -4.5vh;
+    left: 0;
+    font-size: 3vh;
+    line-height: 1em;
+    font-weight: bold;
+    font-family: 'Neue Plak W01 Wide Bold';
+    color: #009fd9;
+    transition: color .5s linear;
+    span{
+        padding-left: 0;
+        transition: all .4s ease-in-out;
+        cursor: pointer;
+    }
+    &:hover{
+        color:$active;
+    }
+    &:hover span{
+        color:$active;
+        padding-left: 10px;
+    }
+}
