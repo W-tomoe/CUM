@@ -7,3 +7,22 @@
     left: .30rem;
 }
 
+<<<<<<< HEAD
+=======
+
+/* 清除浮动 */
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix::after {
+    content: ".";
+    clear: both;
+    display: block;
+    overflow: hidden;
+    font-size: 0;
+    height: 0;
+}
+
+
+>>>>>>> dede3e98c2fa88fc347d931f708984ea935d2fb0

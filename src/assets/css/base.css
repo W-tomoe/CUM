@@ -5,6 +5,10 @@
     src: url('../font/FatCat.ttf');
 }
     
+<<<<<<< HEAD
 .home-menu>li{
+=======
+.home-menu-container>li{
+>>>>>>> dede3e98c2fa88fc347d931f708984ea935d2fb0
     font-family: 'FatCat';
 }

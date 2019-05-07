@@ -13,7 +13,7 @@ $active: #005479;
 
 body{
     height: 100vh;
-    background: url(../../assets/images/home-bg.png) no-repeat;
+    // background: url(../../assets/images/home-bg.png) no-repeat;
     background-size: 13.1rem 10.8rem;
     background-position: right center;
     position: relative;
@@ -54,18 +54,21 @@ body{
     }
 }
 
-.home-menu {
+//主页左侧菜单
+.home-list{
+    top: 0;
+    left: 0;
     position: absolute;
-    top:.45rem;
-    left: 1.8rem;
-    li{
-        position: relative;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
-        transition: all 1s linear;
-        a{
-            transition: all 1s linear;
-        }
+    width: 0;
+    z-index: 1;
+}
+
+.home-menu-container {
+    position: absolute;
+    top: 10vh;
+    width: 0;
+    height: 0;
+    user-select: none;
         .overlay{
             position: absolute;
             font-size: .16rem;
@@ -89,10 +92,10 @@ body{
                 position:relative;
             } */
         }
-        &:hover a{
+        &:hover{
             color:$active;
         }
-    }
+    
     .do{
         color:$do;
         .overlay{
@@ -145,69 +148,10 @@ body{
 
 }
 
-.menu{
-    width: 100%;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 2;
-    position: fixed;
-    display: block;
-    background: linear-gradient(to bottom,#005579 10%,#029ed6 90%);
-    .menu-logo{
-        position: absolute;
-        display: inline-block;
-        top:7vh;
-        left: 50%;
-        height: 30vh;
-        transform: translateX(-50%);
-        img{
-            height: 100%;
-        }
-    }
 
-    .left-content{
-        position: absolute;
-        top:46vh;
-        left: 2.82rem;
-        width: 5.95rem;
-        color:white;
-    }
 
-    .title{
-        font-size: 3vh;
-    }
-    .content{
-        padding-top: 2.8vh;
-        font-size: 1.8vh;
-        line-height: 2.5vh;
-        word-break:break-all;
-    }
 
-    .right-content{
-        position: absolute;
-        top:46vh;
-        right: 2.82rem;
-        width: 5.95rem;
-        color:white;
-    }
-
-    .third-party-container{
-        position: absolute;
-        bottom: 13vh;
-        left: 50%;
-        transform: translateX(-50%);
-        .third-party__item{
-            display: inline-block;
-            width: .75rem;
-            height: .75rem;
-            img{
-                width: 100%;
-            }
-        }
-    }
-}
-
+//首页左侧标签
 .home-list-label {
     position: absolute;
     font-size: 1.65vh;
@@ -220,6 +164,36 @@ body{
 }
 
 
+.home-button {
+    position: relative;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0px, 0px, 1px);
+    margin-left: 81px;
+    position: relative;
+}
+
+
+
+.home-list__button {
+    display: table;
+}
+
+
+@media (min-width: 1220px){
+    .home-button {
+        margin-left: 9vw;
+    }
+}
+@media (min-width: 600px){
+    .home-button {
+        margin-left: 200px;
+    }
+}
+
+
+
+//首页右侧预览
 .album-slideshow-container{
     position: absolute;
     right: 0;
@@ -263,3 +237,114 @@ body{
         padding-left: 10px;
     }
 }
+
+
+// 菜单页面
+.menu{
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 2;
+    position: fixed;
+    display: none;
+    .menu-bg{
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(to bottom,#005579 10%,#029ed6 90%);
+    }
+
+    .menu-logo{
+        position: absolute;
+        display: inline-block;
+        top:7vh;
+        left: 50%;
+        height: 30vh;
+        transform: translateX(-50%);
+        img{
+            height: 100%;
+        }
+    }
+    .menu-content__wrapper{
+        position: absolute;
+        top:46vh;
+        width: 100%;
+
+        .left-content{
+            width: 4rem;
+            color:white;
+            float: left;
+        }
+
+        .title{
+            font-size: 3vh;
+        }
+        .content{
+            padding-top: 2.8vh;
+            font-size: 1.8vh;
+            line-height: 2.5vh;
+            word-break:break-all;
+        }
+
+        .right-content{
+            position: absolute;
+            top:46vh;
+            right: 2.82rem;
+            width: 4rem;
+            color:white;
+            float: right;
+        }
+    }
+    .third-party-container{
+        position: absolute;
+        bottom: 13vh;
+        left: 50%;
+        transform: translateX(-50%);
+        .third-party__item{
+            display: inline-block;
+            width: .75rem;
+            height: .75rem;
+            img{
+                width: 100%;
+            }
+        }
+    }
+    
+}
+
+
+
+.menu-container{
+    width: 100%;
+    height: 100%;
+    padding: 100px 30px 30px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    overflow: scroll;
+}
+
+@media (min-width: 1105px){
+    .menu-container {
+        width: 1050px;
+    }
+    .menu-title {
+        font-size: 24px;
+    }
+}
+
+
+@media (min-width: 1005px){
+    .menu-container {
+        overflow: hidden;
+        padding: 0;
+        width: 950px;
+        height: 100%;
+    }
+    .menu-title {
+        font-size: 20px;
+    }
+}
+
