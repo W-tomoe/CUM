@@ -3,12 +3,10 @@
     width: 1.2rem;
     height: .93rem;
     position: absolute;
-    top:.35rem;
-    left: .30rem;
+    top:35px;
+    left: 30px;
 }
 
-<<<<<<< HEAD
-=======
 
 /* 清除浮动 */
 .clearfix {
@@ -25,4 +23,3 @@
 }
 
 
->>>>>>> dede3e98c2fa88fc347d931f708984ea935d2fb0
