@@ -5,6 +5,6 @@
     src: url('../font/FatCat.ttf');
 }
     
-.home-menu>li{
+.home-menu-container>li{
     font-family: 'FatCat';
 }

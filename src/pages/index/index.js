@@ -2,8 +2,12 @@ import resizeRem from '../../assets/js/rem.js'
 import main from '../../assets/js/window.js'
 import {getClass, getId } from '../../assets/js/dom.js'
 import './index.scss'
+//动画库
+import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
 
 resizeRem()
+
+
 
 const menuMap = [
     'DO',
@@ -33,7 +37,7 @@ let page = {
             
             let rem = wW * 100 / designSize;
             document.documentElement.style.fontSize = rem + 'px';
-            that.calDom()
+
         }
 
         that.calDom()
@@ -48,20 +52,20 @@ let page = {
     calDom() {
         const that = this
         // dom极端
-        let menuDom = that.menuDom = $('.home-menu')
-        menuDom.css({
+        let menuDom = that.$menuDom = $('.home-menu-container')
+        that.$menuDom.css({
             fontSize: that.wH * 0.12 + 'px'
         })
 
         // 首页左侧竖向字体
         
-        let labelDom = that.labelDom = $('.home-list-label')
-        labelDom.css({
+        that.$labelDom = $('.home-list-label')
+        that.$labelDom.css({
             top: that.wH * 0.5 * 1.5 + 'px'
         })
 
         //  右侧product
-        let albumContainer = that.albumContainer = $('.album-slideshow-container')
+        let albumContainer = that.$albumContainer = $('.album-slideshow-container')
         albumContainer.css({
             height: 100 * 0.6 + 'vh',
             top: that.wH * 0.2 + 'px',
@@ -74,14 +78,15 @@ let page = {
     },
     addEvent() {
         let that = this
-        let slidLabel = that.slidLabel = $('.album-slideshow__label')
+        that.$slidLabel = $('.album-slideshow__label')
+
 
         let hoverIndex = 0
         //菜单悬停切换右侧图片
-        $('.home-menu').mouseover((e) => {
+        that.$menuDom.mouseover((e) => {
             let target = $(e.target)
 
-            let menuChild = $('.home-menu').children()
+            let menuChild = that.$menuDom.children()
             
             for(let i = 0; i < menuChild.length; i ++) {
                 if($(menuChild[i]).attr('class') === target.attr('class')) {
@@ -89,94 +94,130 @@ let page = {
                 }
             }
 
-            that.albumContainer
+            that.$albumContainer
                 .find('.show')
                 .removeClass('show')
             
-            that.albumContainer.children()
+            that.$albumContainer.children()
                 .eq(hoverIndex)
                 .addClass('show')
             
-            that.slidLabel.html(getTip(hoverIndex))
+            that.$slidLabel.html(getTip(hoverIndex))
         })
 
         //点击label跳转动画
         let timer 
 
-        slidLabel.click(() => {
+        that.$slidLabel.click(() => {
             if(timer) return
-            that.albumContainer.css({right: '500px'})
-            timer = setTimeout(() => {
+            that.$albumContainer.css({right: '500px'})
+            /* timer = setTimeout(() => {
                 main.open('../sliderDetail.html')
-            },1000)
+            },1000) */
             
         })
 
         //  菜单按钮悬停
-        let showMenu = that.showMenu = false
+        let showMenu = that.showMenu = false //是否显示主菜单
+        let menuButton = that.$menuButton = $('.menu-button')
+        let menuPage = that.$menuButton = $('.menu')
+        let menuBg = that.$menuButton = $('.menu-bg')
+        let MenuTime = 0.4 // 菜单按钮动画时间
 
-        let menuButton = that.menuButton = $('.menu-button')
+        //设置初始位置
+        TweenMax.set(menuButton.children().eq(0),{
+            width:'22px',
+            y: 8,
+            x: 3
+        })
+
+        TweenMax.set(menuButton.children().eq(1),{
+            width:'22px',
+            y: 13,
+            x: 3
+        })
+
+        TweenMax.set(menuButton.children().eq(2),{
+            width:'22px',
+            y: 18,
+            x: 3
+        })
+
+
         menuButton.mousemove(() => {
             if(showMenu) return
-            menuButton.children().eq(0).css({
-                transform: 'matrix(1, 0, 0, 1, 3, 6)',
-                width: '22px'
+            TweenMax.to(menuButton.children().eq(0), MenuTime, {
+                y: 6
             })
-
-            menuButton.children().eq(2).css({
-                transform: 'matrix(1, 0, 0, 1, 3, 20)',
-                width: '22px'
+    
+            TweenMax.to(menuButton.children().eq(2), MenuTime, {
+                y: 20
             })
         })
 
+        
         menuButton.mouseleave(() => {
             if(showMenu) return
-            menuButton.children().eq(0).css({
-                transform: 'matrix(1, 0, 0, 1, 3, 8)',
-                width: '22px'
-            })
 
-            menuButton.children().eq(2).css({
-                transform: 'matrix(1, 0, 0, 1, 3, 18)',
-                width: '22px'
+            TweenMax.to(menuButton.children().eq(0), MenuTime, {
+                y: 8
+            })
+    
+            TweenMax.to(menuButton.children().eq(2), MenuTime, {
+                y: 18
             })
         })
 
+        // 点击按钮打开菜单
         menuButton.click(() => {
             showMenu = !showMenu
-
+            
             if(showMenu) {
                 menuButton.children('.menu-button__line ').css({'background-color':'#fff'})
 
-                menuButton.children().eq(0).css({
-                    transform: 'matrix(0.7071, 0.7071, -0.7071, 0.7071, 7, 5)',
-                    width: '22px'
-                })
+                TweenMax.to(menuButton.children().eq(0),MenuTime,{
+                    rotation:45,
+                    delay: MenuTime
+                },MenuTime)
 
-                menuButton.children().eq(1).css({
-                    transform: 'matrix(1, 0, 0, 1, 3, 13)',
+                TweenMax.to(menuButton.children().eq(1),MenuTime,{
                     width: 0
                 })
 
-                menuButton.children().eq(2).css({
-                    transform: 'matrix(0.7071, -0.7071, 0.7071, 0.7071, 7, 20)',
-                    width: '22px'
+                TweenMax.to(menuButton.children().eq(2),MenuTime,{
+                    rotation:-45,
+                    delay: MenuTime
+                },MenuTime)
+
+                TweenMax.to(menuBg,MenuTime,{
+                    width:'100%'
+                })
+                
+                menuPage.css({
+                    display: 'block'
                 })
             }else {
                 menuButton.children('.menu-button__line ').css({'background-color':'#005479'})
-                menuButton.children().eq(0).css({
-                    transform: 'matrix(1, 0, 0, 1, 3, 8)',
-                    width: '22px'
+                TweenMax.to(menuButton.children().eq(0),MenuTime,{
+                    rotation:0,
+                    
+                },MenuTime)
+
+                TweenMax.to(menuButton.children().eq(1),MenuTime,{
+                    width: '22px',
+                    delay: MenuTime
                 })
 
-                menuButton.children().eq(1).css({
-                    transform: 'matrix(1, 0, 0, 1, 3, 13)',
-                    width: '22px'
+                TweenMax.to(menuButton.children().eq(2),MenuTime,{
+                    rotation:0
+                },MenuTime)
+
+                TweenMax.to(menuBg,MenuTime,{
+                    width:0
                 })
 
-                menuButton.children().eq(2).css({
-                    transform: 'matrix(1, 0, 0, 1, 3, 18)',
-                    width: '22px'
+                menuPage.css({
+                    display: 'none'
                 })
             }
         })
