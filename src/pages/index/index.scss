@@ -11,6 +11,8 @@ $la:#3d7e4d;
 $ti:#039d4d;
 $active: #005479;
 $ligthActive: #009fd6;
+$orange: #f58539;
+
 
 body{
     height: 100vh;
@@ -138,7 +140,7 @@ body{
 .home-list-label {
     position: absolute;
     font-size: 1.65vh;
-    left: 1.1rem;
+    left: 58px;
     color:$active;
     transform: rotate(-90deg);
     transform-origin: top left;
@@ -441,6 +443,41 @@ body{
     left: -30%;
     border-radius: 50%;
     outline: none;
+}
+
+/* 详情商品展示容器 */
+
+.album-strip{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+.album {
+    position: absolute;
+    height: 100%;
+}
+
+.album-strip__img{
+    height: 100%;
+    img{
+        height: 100%;
+    }
+}
+
+.album-strip__title{
+    color: $orange;
+    font-size: 0.25rem;
+    font-weight: bold;
+    padding-top: .33rem;
+}
+
+.album-strip__desc{
+    color: $active;
+    font-size: 0.16rem;
+    font-weight: bold;
+    padding-top: .3rem;
 }
 
 

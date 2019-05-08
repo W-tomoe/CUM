@@ -9,6 +9,7 @@ let page = {
         that.$menuDom = $('.home-menu-container') // 菜单容器
         that.$homeButton = $('.home-button-text') // 左侧菜单容器
         that.$labelDom = $('.home-list-label') // 首页左侧竖向字体
+        that.$albumCenterContainer = $('.gallery-list__centering')
         that.$albumContainer = $('.album-slideshow-container') // 首页右侧商品展示容器
         that.$galleryList = $('.gallery-list') // 右侧商品最外层容器
         that.$galleryMask = $('.gallery-list__mask') // 右侧商品外层mask
@@ -73,9 +74,14 @@ let page = {
 
         //  右侧product
 
-        that.$albumContainer.css({
+        that.$albumCenterContainer.css({
             height: 100 * 0.6 + 'vh',
             top: that.wH * 0.2 + 'px',
+            width: (1107 / 684) * 100 * 0.6 + 'vh'
+        })
+
+        that.$albumContainer.css({
+            height: '100%',
             width: (1107 / 684) * 100 * 0.6 + 'vh'
         })
 

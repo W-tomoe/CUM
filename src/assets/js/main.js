@@ -7,12 +7,12 @@ import {
 import homeAlbum from './homeAlbum.js'
 import UrlManger from './UrlManger.js'
 
+import Details from '../../assets/js/data.js'
+
 
 let html = document.documentElement;
 let wH = html.clientHeight; // 窗口宽度
 let wW = html.clientWidth;
-
-let menuShowing = false
 
 
 const menuMap = [
@@ -96,9 +96,34 @@ const main = {
                 this.labelDomLeave.restart()
             
                 router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
+
+                this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
             }
-            
         })
+    },
+    randerAlbumStrip(data) {
+        let domWidth = $('.show').outerWidth(true)
+        let centerContainerWidth = 0
+        
+        let html =  ``
+        data.forEach((item,index) => {
+            centerContainerWidth += domWidth * 2 * index 
+            html += `
+                <div class="album album-strip__album pink" style="left:${ domWidth * 2 * index }px; opacity: 1;">
+                    <div class="album-strip__img">
+                        <img src="${item.productImg}"></img>
+                    </div>
+                    <div class="album-strip__name">
+                        <div class="album-strip__title">${item.title}</div>
+                        <div class="album-strip__desc">${item.desc}</div>
+                    </div>
+                </div>
+            `
+        })
+        $('.gallery-list__centering').css({
+            width: centerContainerWidth+'px'
+        })
+        $('.album-strip').width(centerContainerWidth+'px').html(html)
     },
     menuButtonAndLogoInit(logo, menuButton) {
 
@@ -270,8 +295,7 @@ const main = {
         this.setData({
             showMenu: false,
             MenuTime: 0.4,
-            menuDelay: .5,
-            menuShowing: false
+            menuDelay: .5
         })
 
         

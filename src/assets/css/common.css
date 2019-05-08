@@ -1,11 +1,11 @@
 
 .logo{
-    width: 120px;
-    height: 93px;
+    width: 90px;
+
     position: absolute;
     top:0;
     left: 0;
-    margin: 29px 0 0 30px;
+    margin: 12px 0 0 20px;
 }
 
 .logo img{
