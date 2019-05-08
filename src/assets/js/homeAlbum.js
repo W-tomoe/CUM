@@ -4,7 +4,9 @@
 let  homeAlbum =  {
     getDom() {
         this.$slidLabel = $('.album-slideshow__label') 
+        this.$galleryList = $('.gallery-list') 
         this.$galleryMask = $('.gallery-list__mask') 
+        this.$galleryCentering = $('.gallery-list__centering') 
 
     },
     showLabel() {
@@ -18,8 +20,19 @@ let  homeAlbum =  {
         })
     },
     enter(albumShowTranformX) {
-        let albumEnter = new TweenMax([this.$galleryMask],.8,{
-            x:-albumShowTranformX,
+        TweenMax.to(this.$galleryList,.8,{
+            x:0,
+            ease:Quad.easeInOut
+        })
+        
+        let albumEnter = new TweenMax(this.$galleryCentering,.8,{
+            x:albumShowTranformX,
+            ease:Quad.easeInOut
+        })
+
+
+        TweenMax.to(this.$galleryMask,.8,{
+            x:0,
             ease:Quad.easeInOut
         })
 

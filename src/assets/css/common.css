@@ -1,11 +1,18 @@
 
 .logo{
-    width: 1.2rem;
-    height: .93rem;
+    width: 120px;
+    height: 93px;
     position: absolute;
-    top:35px;
-    left: 30px;
+    top:0;
+    left: 0;
+    margin: 29px 0 0 30px;
 }
+
+.logo img{
+    width: 100%;
+}
+
+
 
 
 /* 清除浮动 */

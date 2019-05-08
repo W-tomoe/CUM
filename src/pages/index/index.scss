@@ -10,6 +10,7 @@ $so:#93514b;
 $la:#3d7e4d;
 $ti:#039d4d;
 $active: #005479;
+$ligthActive: #009fd6;
 
 body{
     height: 100vh;
@@ -20,14 +21,9 @@ body{
     overflow: hidden;
 }
 
-.logo{
-    width: 1.2rem;
-    height: .93rem;
-    position: absolute;
-    top:.35rem;
-    left: .30rem;
-    background: url(../../assets/images/logo.png) no-repeat;
-    background-size: 1.2rem .93rem;
+* {
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .menu-button{
@@ -142,7 +138,7 @@ body{
 .home-list-label {
     position: absolute;
     font-size: 1.65vh;
-    left: .8rem;
+    left: 1.1rem;
     color:$active;
     transform: rotate(-90deg);
     transform-origin: top left;
@@ -196,6 +192,8 @@ body{
     position: absolute;
     user-select: none;
     z-index: 0;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .gallery-list__mask{
     width: 100vw;
@@ -251,6 +249,12 @@ body{
     }
 }
 
+.gallery-list__centering{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 
 // 菜单页面
 .menu{
@@ -269,63 +273,64 @@ body{
         background: linear-gradient(to bottom,#005579 10%,#029ed6 90%);
     }
 
-    .menu-logo{
-        position: absolute;
-        display: inline-block;
-        top:7vh;
-        left: 50%;
-        height: 30vh;
-        transform: translateX(-50%);
-        img{
-            height: 100%;
-        }
-    }
     .menu-content__wrapper{
-        position: absolute;
-        top:46vh;
-        width: 100%;
-
-        .left-content{
-            width: 4rem;
-            color:white;
-            float: left;
-        }
-
         .title{
-            font-size: 3vh;
+            font-size: 20px;
+            
+            font-weight: bold;
         }
         .content{
             padding-top: 2.8vh;
-            font-size: 1.8vh;
-            line-height: 2.5vh;
+            font-size: 16px;
+            line-height: 22px;
             word-break:break-all;
         }
 
-        .right-content{
-            position: absolute;
-            top:46vh;
-            right: 2.82rem;
-            width: 4rem;
-            color:white;
-            float: right;
-        }
+        
     }
     .third-party-container{
-        position: absolute;
-        bottom: 13vh;
-        left: 50%;
-        transform: translateX(-50%);
-        .third-party__item{
-            display: inline-block;
-            width: .75rem;
-            height: .75rem;
-            img{
-                width: 100%;
-            }
-        }
+        
+        text-align: center;
     }
     
 }
+
+.menu-logo{
+    margin-top: .8rem;
+    text-align: center;
+    img{
+        width: 4rem;
+        height: 3.1rem;
+        display: inline-block;
+        margin: 0 auto;
+        height: 100%;
+    }
+}
+
+.third-party__item{
+    margin-top: 0.8rem;
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    img{
+        width: 100%;
+    }
+}
+
+.left-content{
+    margin-top: 80px;
+    width: 100%;
+    color:white;
+    float: left;
+}
+
+.right-content{
+    margin-top: 80px;
+    width: 100%;
+    color:white;
+    float: right;
+}
+
 
 .menu-tint{
     position: absolute;
@@ -344,27 +349,173 @@ body{
     position: relative;
     z-index: 1;
     overflow: scroll;
+    box-sizing: border-box
 }
+
+
+/* 进度条 */
+.progress-track{
+    position: absolute;
+    width: 70vw;
+    margin-left: -35vw;
+    height: 6px;
+    top: 36px;
+    left: 50%;
+    border-radius: 3px;
+    background-color: #FFC832;
+    background: linear-gradient(to right,#ffc832 0,#ff7d7d 100%);
+}
+.progress-bar{
+    position: absolute;
+    width: 5vw;
+    height: 100%;
+    border-radius: 3px;
+    background-color: $active;
+    pointer-events: none;
+}
+
+.progress-hit-area{
+    position: absolute;
+    height: 50px;
+    width: 100%;
+    margin-top: -22px;
+    margin-left: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.arrow-button{
+    cursor: pointer;
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    top: 100%;
+    margin-top: -63px;
+    left: 50%;
+    border: 2px solid $ligthActive;
+    background-color: transparent;
+    transition: border-color .7s linear,background-color .7s linear,opacity .4s linear;
+}
+
+.arrow-button.inactive {
+    background-color: transparent;
+    border-color: #E6EBD2;
+}
+
+.arrow-button--left{
+    margin-left: -45px;
+}
+
+.arrow-button--right{
+    margin-left: 8px;
+}
+
+.arrow-button--left::after, .arrow-button--right::after {
+    content: "";
+    width: 11px;
+    height: 11px;
+    top: 11px;
+    border-top: 2px solid $ligthActive;
+    border-right: 2px solid $ligthActive;
+    position: absolute;
+}
+.arrow-button--left::after{
+    left: 13px;
+    transition: border-color .7s linear;
+    transform: rotate(-135deg);
+    transform-origin: 50% 50%;
+}
+
+.arrow-button--right::after{
+    left: 9px;
+    transition: border-color .7s linear;
+    transform: rotate(45deg);
+    transform-origin: 50% 50%;
+}
+
+.arrow-button-hit-area{
+    position: absolute;
+    width: 160%;
+    height: 160%;
+    top: -30%;
+    left: -30%;
+    border-radius: 50%;
+    outline: none;
+}
+
 
 @media (min-width: 1105px){
     .menu-container {
         width: 1050px;
     }
+
+    
     .menu-title {
         font-size: 24px;
     }
 }
 
 
-@media (min-width: 1005px){
+
+@media (min-width: 1023px){
     .menu-container {
         overflow: hidden;
         padding: 0;
         width: 950px;
         height: 100%;
     }
+
+    .menu-logo{
+        margin-top: .8rem;
+        text-align: center;
+        img{
+            width: 4rem;
+            height: 3.1rem;
+            display: inline-block;
+            margin: 0 auto;
+            height: 100%;
+        }
+    }
+
+    .third-party__item{
+        margin-top: 1rem;
+        width: 50px;
+        height: 50px;
+    }
+
+    .left-content{
+        width: 45%;
+        margin-top: .8rem;
+    }
+    
+    .right-content{
+        width: 45%;
+        margin-top: .8rem;
+    }
+
     .menu-title {
         font-size: 20px;
     }
 }
+
+@media (max-width: 415px){
+    .third-party__item{
+        margin-top: 80px;
+        width: 50px;
+        height: 50px;
+    }
+
+
+    .menu-logo{
+        text-align: center;
+        img{
+            width: 150px;
+            display: inline-block;
+            margin: 0 auto;
+            height: 100%;
+        }
+    }
+}
+
+
 

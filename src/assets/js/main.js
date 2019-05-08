@@ -77,25 +77,53 @@ const main = {
             x: this.data.windowW
         })
 
-        //点击label跳转动画
-        this.data.albumShowTranformX = (this.data.windowW / 2) + (transformX / 2) // list起始位置为中心
+        //点击首页右侧商品跳转动画
+        this.data.albumShowTranformX = (this.data.windowW / 2) - (transformX / 2) // list起始位置为中心
 
-        slidLabel.click(() => {
-            this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
+        albumContainer.click(() => {
+            if(router.canPush()) {
+                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
 
-            // 菜单左滑
-            for (let i = 0; i <= this.data.menuLen; i++) {
-                TweenMax.to($(this.data.menuChild[i]), this.data.menuSliderTime, {
-                    x: -this.data.homeMenuXlist[i],
-                    delay: this.data.homeMenuDelay * i,
-                    ease: Quad.easeInOut
-                })
+                // 菜单左滑
+                for (let i = 0; i <= this.data.menuLen; i++) {
+                    TweenMax.to($(this.data.menuChild[i]), this.data.menuSliderTime, {
+                        x: -this.data.homeMenuXlist[i],
+                        delay: this.data.homeMenuDelay * i,
+                        ease: Quad.easeInOut
+                    })
+                }
+
+                this.labelDomLeave.restart()
+            
+                router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
             }
-
-            this.labelDomLeave.restart()
-
-            router.push(this.data.MenuHoverIndex, menuMap[this.data.MenuHoverIndex])
+            
         })
+    },
+    menuButtonAndLogoInit(logo, menuButton) {
+
+        this.logoWidth = logo.outerWidth(true)
+
+        this.menuButtonWidth = menuButton.outerWidth(true)
+
+        TweenMax.set(logo, {
+            x: - this.logoWidth
+        })
+
+        TweenMax.set(menuButton, {
+            x: this.menuButtonWidth + 28
+        })
+
+        this.logoEnter =  TweenMax.to(logo, this.data.menuSliderTime, {
+            left:this.logoWidth,
+            ease: Quad.easeInOut
+        }) 
+
+        this.menuButtonEnter  = TweenMax.to(menuButton, this.data.menuSliderTime, {
+            x: 0,
+            ease: Quad.easeInOut
+        })
+
     },
     HomeMenuEvent(parent, chlids, albumContainer, slidLabel, labelDom) {
         this.setData({
@@ -147,71 +175,73 @@ const main = {
 
             this.data.MenuHoverIndex = $(e.target).parent().index()
 
-            TweenMax.to(labelDom, this.data.menuSliderTime, {
-                x: -300
-            })
+            if(router.canPush()) {
+                router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
 
-
-
-            this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
-
-            if (this.data.MenuHoverIndex === 0) { // 动画延迟从头开始
-                for (let i = 0; i <= len; i++) {
-                    TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
-                        x: -this.data.homeMenuXlist[i],
-                        delay: this.data.homeMenuDelay * i,
-                        ease: Quad.easeInOut
-                    })
-                }
-            } else if (0 > this.data.MenuHoverIndex < len) { // 动画延迟从中间开始
-                let left = [],
-                    right = [],
-                    leftXlist = [],
-                    rightXlist = []
-
-                TweenMax.to($(chlids[this.data.MenuHoverIndex]), this.data.menuSliderTime, {
-                    x: -this.data.homeMenuXlist[this.data.MenuHoverIndex],
-                    delay: 0,
-                    ease: Quad.easeInOut
+                TweenMax.to(labelDom, this.data.menuSliderTime, {
+                    x: -300
                 })
 
-                for (let i = 0; i <= len; i++) {
-                    if (i < this.data.MenuHoverIndex) {
-                        left.push($(chlids[i]))
-                        leftXlist.push(this.data.homeMenuXlist[i])
-                    } else if (i > this.data.MenuHoverIndex) {
-                        right.push($(chlids[i]))
-                        rightXlist.push(this.data.homeMenuXlist[i])
+                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
+
+                if (this.data.MenuHoverIndex === 0) { // 动画延迟从头开始
+                    for (let i = 0; i <= len; i++) {
+                        TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
+                            x: -this.data.homeMenuXlist[i],
+                            delay: this.data.homeMenuDelay * i,
+                            ease: Quad.easeInOut
+                        })
                     }
-                }
+                } else if (0 > this.data.MenuHoverIndex < len) { // 动画延迟从中间开始
+                    let left = [],
+                        right = [],
+                        leftXlist = [],
+                        rightXlist = []
 
-                for (let i = 0; i < right.length; i++) {
-                    TweenMax.to(right[i], this.data.menuSliderTime, {
-                        x: -rightXlist[i],
-                        delay: this.data.homeMenuDelay * (i + 1),
+                    TweenMax.to($(chlids[this.data.MenuHoverIndex]), this.data.menuSliderTime, {
+                        x: -this.data.homeMenuXlist[this.data.MenuHoverIndex],
+                        delay: 0,
                         ease: Quad.easeInOut
                     })
-                }
 
-                left.reverse()
-                leftXlist.reverse()
-                for (let l = 0; l < left.length; l++) {
-                    TweenMax.to(left[l], this.data.menuSliderTime, {
-                        x: -leftXlist[l],
-                        delay: this.data.homeMenuDelay * (l + 1),
-                        ease: Quad.easeInOut
-                    })
-                }
+                    for (let i = 0; i <= len; i++) {
+                        if (i < this.data.MenuHoverIndex) {
+                            left.push($(chlids[i]))
+                            leftXlist.push(this.data.homeMenuXlist[i])
+                        } else if (i > this.data.MenuHoverIndex) {
+                            right.push($(chlids[i]))
+                            rightXlist.push(this.data.homeMenuXlist[i])
+                        }
+                    }
 
-                homeMenuIsMove = true
+                    for (let i = 0; i < right.length; i++) {
+                        TweenMax.to(right[i], this.data.menuSliderTime, {
+                            x: -rightXlist[i],
+                            delay: this.data.homeMenuDelay * (i + 1),
+                            ease: Quad.easeInOut
+                        })
+                    }
 
-            } else if (this.data.MenuHoverIndex === len) { // 动画延迟从末尾开始
-                for (let i = len; i >= 0; i--) {
-                    TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
-                        x: -this.data.homeMenuXlist[i],
-                        delay: this.data.homeMenuDelay * Math.abs(i - len),
-                        ease: Quad.easeInOut
-                    })
+                    left.reverse()
+                    leftXlist.reverse()
+                    for (let l = 0; l < left.length; l++) {
+                        TweenMax.to(left[l], this.data.menuSliderTime, {
+                            x: -leftXlist[l],
+                            delay: this.data.homeMenuDelay * (l + 1),
+                            ease: Quad.easeInOut
+                        })
+                    }
+
+                    homeMenuIsMove = true
+
+                } else if (this.data.MenuHoverIndex === len) { // 动画延迟从末尾开始
+                    for (let i = len; i >= 0; i--) {
+                        TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
+                            x: -this.data.homeMenuXlist[i],
+                            delay: this.data.homeMenuDelay * Math.abs(i - len),
+                            ease: Quad.easeInOut
+                        })
+                    }
                 }
             }
         })
@@ -357,7 +387,8 @@ const main = {
             } else {
 
                 TweenMax.to(menuMask, 1, {
-                    opacity: 0
+                    opacity: 0,
+                    delay: this.data.menuDelay
                 })
 
                 menuButton.children('.menu-button__line ').css({
