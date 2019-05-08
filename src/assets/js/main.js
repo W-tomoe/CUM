@@ -102,6 +102,7 @@ const main = {
         })
     },
     randerAlbumStrip(data) {
+        console.log(data)
         let domWidth = $('.show').outerWidth(true)
         let centerContainerWidth = 0
         
@@ -268,6 +269,8 @@ const main = {
                         })
                     }
                 }
+
+                this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
             }
         })
 
