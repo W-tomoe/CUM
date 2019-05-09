@@ -9,7 +9,7 @@ import UrlManger from './UrlManger.js'
 
 import Details from '../../assets/js/data.js'
 
-import process from '../../assets/js/process.js'
+import process from './process.js'
 
 
 let html = document.documentElement;
@@ -41,11 +41,11 @@ let menuIsMove = false
 //首页菜单栏防止多次点击
 let homeMenuIsMove = false
 
-let router
+/* let router
 
 if(!router) {
     router = new UrlManger()
-}
+} */
 
 const main = {
     data() {
@@ -67,6 +67,7 @@ const main = {
 
     },
     initRightPriview(galleryList, galleryMask, albumContainer, slidLabel) {
+        //process.init(router)
         process.init()
 
         let transformX = albumContainer.width()
@@ -88,7 +89,7 @@ const main = {
         this.data.albumShowTranformX = (this.data.windowW / 2) - (transformX / 2) // list起始位置为中心
 
         albumContainer.click(() => {
-            if(router.canPush()) {
+            //if(router.canPush()) {
                 this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX, () => {
                     process.show()
                 })
@@ -107,19 +108,22 @@ const main = {
                     })
                 }
 
-                this.labelDomLeave.restart()
+                TweenMax.to(this.labelDom, this.data.menuSliderTime, {
+                    x: -300,
+                    ease: Quad.easeInOut
+                })
             
-                router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
+                //router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
 
 
                 setTimeout(() => {
-                    this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
+                    this.renderAlbumStrip(Details[this.data.MenuHoverIndex])
                 },20)
-            }
+            //}
         })
     },
-    randerAlbumStrip(data) {
-        
+    renderAlbumStrip(data) {
+        console.log(data,'data')
         let domWidth = $('.show').outerWidth(true)
         let centerContainerWidth = 0
         
@@ -138,7 +142,7 @@ const main = {
                 </div>
             `
         })
-        $('.gallery-list__centering').css({
+        $('.album-container').css({
             width: centerContainerWidth+'px'
         })
         $('.album-strip').width(centerContainerWidth+'px').html(html)
@@ -174,6 +178,8 @@ const main = {
             MenuHoverIndex: 0,
             labelDom: labelDom
         })
+
+        this.labelDom = labelDom
         
         //初始化菜单动画
         let len = chlids.length - 1
@@ -219,16 +225,16 @@ const main = {
 
             this.data.MenuHoverIndex = $(e.target).parent().index()
 
-            console.log(this.data.MenuHoverIndex, 'parentCLick')
 
-            if(router.canPush()) {
-                router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
-
+            //if(router.canPush()) {
+                //router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
                 TweenMax.to(labelDom, this.data.menuSliderTime, {
                     x: -300
                 })
 
-                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
+                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX,()=>{
+                    process.show()
+                })
 
                 if (this.data.MenuHoverIndex === 0) { // 动画延迟从头开始
                     for (let i = 0; i <= len; i++) {
@@ -289,12 +295,9 @@ const main = {
                         })
                     }
                 }
-
-                this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
-            }
+                this.renderAlbumStrip(Details[this.data.MenuHoverIndex])
+            //}
         })
-
-
         //菜单悬停切换右侧图片
         parent.mouseover((e) => {
             let index = $(e.target).parent('.home-button').index()

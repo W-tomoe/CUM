@@ -1,4 +1,7 @@
 // 浏览器导航
+import process from './process.js'
+
+process.init()
 class UrlManger {
     constructor() {
         this.pathCache = []
@@ -17,9 +20,9 @@ class UrlManger {
     }
     back() {
         window.addEventListener("popstate", (e) => {
-            console.log(e.state,'state')
             if(!e.state) {
-                location.href = '/'
+                process.homePageEnter()
+                history.pushState('',null, location.href + '');
             } else {
                 this.menuHoverIndex = this.menuMap.indexOf(e.state)
             }
@@ -31,8 +34,12 @@ class UrlManger {
         else return true
     }   
     push(state,key) {
-
-        history.pushState(state,null, location.href + '#' + key +'/'); //(data, title, url)
+        if(state == '') {
+            history.pushState(state,null, location.href.split('/')[0]);
+            return false
+        }
+        
+        history.pushState(state,null, location.href + '#' + key); //(data, title, url)
     }
     replace(state,key) { 
         history.popState(state,null, location.href + key);

@@ -224,6 +224,15 @@ body{
     }
 }
 
+.album-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
 
 
 .album-slideshow__label{
@@ -372,7 +381,7 @@ body{
     width: 5vw;
     height: 100%;
     border-radius: 3px;
-    background-color: $active;
+    background-color: $ligthActive;
     pointer-events: none;
 }
 
@@ -394,10 +403,41 @@ body{
     top: 100%;
     margin-top: -63px;
     left: 50%;
-    border: 2px solid $ligthActive;
+    border: 2px solid $active;
     background-color: transparent;
     transition: border-color .7s linear,background-color .7s linear,opacity .4s linear;
 }
+
+.gallery-list-button{
+    cursor: pointer;
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    top: 19px;
+    left: 130px;
+    border: 2px solid $active;
+    background-color: transparent;
+    transition: border-color .7s linear,background-color .7s linear,opacity .4s linear;
+    z-index:10;
+}
+
+.gallery-list-button--left{
+
+}
+.gallery-list-button--left::after{
+    content: "";
+    width: 11px;
+    height: 11px;
+    top: 11px;
+    border-top: 2px solid $ligthActive;
+    border-right: 2px solid $ligthActive;
+    position: absolute;
+    left: 13px;
+    transition: border-color .7s linear;
+    transform: rotate(-135deg);
+    transform-origin: 50% 50%;
+}
+
 
 .arrow-button.inactive {
     background-color: transparent;
@@ -421,6 +461,11 @@ body{
     border-right: 2px solid $ligthActive;
     position: absolute;
 }
+
+.arrow-button--left.inactive::after, .arrow-button--right.inactive::after{
+    border-color: #E6EBD2;
+}
+
 .arrow-button--left::after{
     left: 13px;
     transition: border-color .7s linear;
@@ -460,6 +505,7 @@ body{
 }
 
 .album-strip__img{
+    display: inline-block;
     height: 100%;
     img{
         height: 100%;

@@ -20,6 +20,9 @@ let  homeAlbum =  {
             opacity: 0
         })
     },
+    homeEnter() {
+        
+    },
     enter(albumShowTranformX,callback) {
         let that = this
         TweenMax.to(this.$galleryList,.8,{
