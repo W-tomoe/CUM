@@ -9,10 +9,16 @@ import UrlManger from './UrlManger.js'
 
 import Details from '../../assets/js/data.js'
 
+import process from '../../assets/js/process.js'
+
 
 let html = document.documentElement;
 let wH = html.clientHeight; // 窗口宽度
 let wW = html.clientWidth;
+
+
+
+
 
 
 const menuMap = [
@@ -51,7 +57,6 @@ const main = {
         Object.keys(opt).forEach(item => {
             this.data[item] = opt[item]
         })
-
     },
     resize(callback) {
         return $(window).on('resize', function () {
@@ -62,6 +67,8 @@ const main = {
 
     },
     initRightPriview(galleryList, galleryMask, albumContainer, slidLabel) {
+        process.init()
+
         let transformX = albumContainer.width()
 
         TweenMax.set(galleryList, {
@@ -82,7 +89,14 @@ const main = {
 
         albumContainer.click(() => {
             if(router.canPush()) {
-                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
+                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX, () => {
+                    process.show()
+                })
+
+
+                TweenMax.set(slidLabel,{
+                    opacity: 0
+                })
 
                 // 菜单左滑
                 for (let i = 0; i <= this.data.menuLen; i++) {
@@ -97,12 +111,15 @@ const main = {
             
                 router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
 
-                this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
+
+                setTimeout(() => {
+                    this.randerAlbumStrip(Details[this.data.MenuHoverIndex])
+                },20)
             }
         })
     },
     randerAlbumStrip(data) {
-        console.log(data)
+        
         let domWidth = $('.show').outerWidth(true)
         let centerContainerWidth = 0
         
@@ -157,6 +174,7 @@ const main = {
             MenuHoverIndex: 0,
             labelDom: labelDom
         })
+        
         //初始化菜单动画
         let len = chlids.length - 1
         this.setData({
@@ -200,6 +218,8 @@ const main = {
             homeMenuIsMove = true
 
             this.data.MenuHoverIndex = $(e.target).parent().index()
+
+            console.log(this.data.MenuHoverIndex, 'parentCLick')
 
             if(router.canPush()) {
                 router.push(menuMap[this.data.MenuHoverIndex], menuMap[this.data.MenuHoverIndex])
@@ -277,7 +297,8 @@ const main = {
 
         //菜单悬停切换右侧图片
         parent.mouseover((e) => {
-            this.data.MenuHoverIndex = $(e.target).parent('.home-button').index()
+            let index = $(e.target).parent('.home-button').index()
+            this.data.MenuHoverIndex = index > 0 ? index : 0
 
             if (this.data.MenuHoverIndex < 0) return
             albumContainer

@@ -6,16 +6,19 @@ const proccess = {
         this.$albumStrip = $('.album-strip')
 
         this.duration = 1
+        this.delay = 0.05
 
-        this.initalProY = this.$proccess.css('top') + this.$proccess.outerHeight(true)
-        this.initalArrow = this.$arrowLeft.outerHeight(true)
+        this.initalProY =  parseInt( this.$proccess.css('top') ) + this.$proccess.outerHeight(true)
+        this.initalArrow = parseInt( this.$arrowLeft.css('margin-top') )
+
+
         TweenMax.set(this.$proccess,{
-            y:-this.initalY,
+            y:- this.initalProY,
             ease:Quad.easeInOut
         })
 
         TweenMax.set([this.$arrowLeft, this.$arrowRight],{
-            y:this.initalArrow,
+            y:-this.initalArrow,
             ease:Quad.easeInOut
         })
 
@@ -24,12 +27,12 @@ const proccess = {
         })
     },
     show() {
-        TweenMax.set(this.$arrowRight,this.duration,{
+        TweenMax.staggerTo([this.$arrowLeft, this.$arrowRight],this.duration,{
             y:0,
             ease:Quad.easeInOut
-        })
+        },this.delay)
 
-        TweenMax.set(this.$proccess,this.duration,{
+        TweenMax.to(this.$proccess,this.duration,{
             y:0,
             ease:Quad.easeInOut
         })
@@ -39,10 +42,22 @@ const proccess = {
         })
     },
     leave() {
+        TweenMax.to([this.$arrowLeft, this.$arrowRight],this.duration,{
+            y:-this.initalArrow,
+            ease:Quad.easeInOut
+        })
 
+        TweenMax.to(this.$proccess,this.duration,{
+            y:- this.initalProY,
+            ease:Quad.easeInOut
+        })
+
+        TweenMax.set(this.$albumStrip,{
+            opacity:0
+        })
     },
     clickProccess() {
-
+        
     },
     clickArrowLeft() {
 
@@ -54,5 +69,7 @@ const proccess = {
 
     }
 }
+
+
 
 export default proccess

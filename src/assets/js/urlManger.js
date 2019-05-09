@@ -17,9 +17,7 @@ class UrlManger {
     }
     back() {
         window.addEventListener("popstate", (e) => {
-
-            
-
+            console.log(e.state,'state')
             if(!e.state) {
                 location.href = '/'
             } else {

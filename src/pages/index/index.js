@@ -2,6 +2,7 @@ import main from '../../assets/js/main.js'
 import './index.scss'
 
 
+
 let page = {
     init() {
         const that = this
