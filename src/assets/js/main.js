@@ -154,22 +154,22 @@ const main = {
         this.menuButtonWidth = menuButton.outerWidth(true)
 
         TweenMax.set(logo, {
-            x: - this.logoWidth
+            x: -this.logoWidth
         })
 
         TweenMax.set(menuButton, {
             x: this.menuButtonWidth + 28
         })
 
-        this.logoEnter =  TweenMax.to(logo, this.data.menuSliderTime, {
-            left:this.logoWidth,
+        /* this.logoEnter =  TweenMax.to(logo, this.data.menuSliderTime, {
+            x: 0,
             ease: Quad.easeInOut
         }) 
 
         this.menuButtonEnter  = TweenMax.to(menuButton, this.data.menuSliderTime, {
             x: 0,
             ease: Quad.easeInOut
-        })
+        }) */
 
     },
     HomeMenuEvent(parent, chlids, albumContainer, slidLabel, labelDom) {

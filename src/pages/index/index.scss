@@ -28,6 +28,19 @@ body{
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+.logo{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 60px;
+     margin: 16px 0 0 20px;
+}
+
+
+.logo img{
+    width: 100%;
+}
+
 .menu-button{
     position: absolute;
     top: 25px;
@@ -294,7 +307,7 @@ body{
             padding-top: 2.8vh;
             font-size: 16px;
             line-height: 22px;
-            word-break:break-all;
+            // word-break:break-all;
         }
 
         
@@ -367,8 +380,8 @@ body{
 /* 进度条 */
 .progress-track{
     position: absolute;
-    width: 70vw;
-    margin-left: -35vw;
+    width: 45vw;
+    margin-left: -13vw;
     height: 6px;
     top: 36px;
     left: 50%;
@@ -376,6 +389,9 @@ body{
     background-color: #FFC832;
     background: linear-gradient(to right,#ffc832 0,#ff7d7d 100%);
 }
+
+
+
 .progress-bar{
     position: absolute;
     width: 5vw;
@@ -408,13 +424,15 @@ body{
     transition: border-color .7s linear,background-color .7s linear,opacity .4s linear;
 }
 
+
 .gallery-list-button{
     cursor: pointer;
     position: absolute;
     width: 36px;
     height: 36px;
-    top: 19px;
-    left: 130px;
+    top: 18px;
+    margin-left: 10vw;
+    left: 50%;
     border: 2px solid $active;
     background-color: transparent;
     transition: border-color .7s linear,background-color .7s linear,opacity .4s linear;
@@ -604,6 +622,20 @@ body{
 
     .menu-title {
         font-size: 20px;
+    }
+
+    .progress-track{
+        width: 70vw;
+        margin-left: -35vw;
+    }
+    
+    .logo{
+        width: 90px;
+        margin: 20px 0 0 20px;
+    }
+
+    .gallery-list-button{
+        margin-left: -40vw;
     }
 }
 

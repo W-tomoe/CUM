@@ -161,12 +161,6 @@ const proccess = {
             ease:Quad.easeInOut,
             delay:this.minDurarion,
             onComplete:(() =>{
-
-                TweenMax.to(this.$albumMask,this.duration ,{
-                    x:- this.$albumShowSlider.width(),
-                    ease:Quad.easeInOut,
-                })
-
                 
                 this.$albumShowSlider.css({
                     display:'block'
@@ -180,15 +174,6 @@ const proccess = {
                     display:'none',
                     width: 0
                 })
-
-
-                TweenMax.to(this.$labelDom, this.minDurarion, {
-                    x: 0,
-                    ease: Quad.easeInOut,
-                    delay: this.minDurarion
-                })
-
-
                 
                 let len = this.$homeMenuChilds.length
 
@@ -199,6 +184,18 @@ const proccess = {
                         ease: Quad.easeInOut
                     })
                 }
+
+                TweenMax.to(this.$labelDom, this.minDurarion, {
+                    x: 0,
+                    ease: Quad.easeInOut,
+                    delay: this.minDurarion,
+                    onComplete:() => {
+                        TweenMax.to(this.$albumMask,this.duration ,{
+                            x:- this.$albumShowSlider.width(),
+                            ease:Quad.easeInOut,
+                        })
+                    }
+                })
             })
         })
     },
