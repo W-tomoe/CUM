@@ -1,11 +1,6 @@
-//动画库
-import {
-    TweenMax,
-    Power2,
-    TimelineLite
-} from "gsap/TweenMax";
+
 import homeAlbum from './homeAlbum.js'
-import UrlManger from './UrlManger.js'
+//import UrlManger from './UrlManger.js'
 
 import Details from '../../assets/js/data.js'
 
@@ -60,42 +55,40 @@ const main = {
     },
     resize(callback) {
         return $(window).on('resize', function () {
+            
             callback && callback()
         })
     },
     matchData(index) {
 
     },
-    initRightPriview(galleryList, galleryMask, albumContainer, slidLabel) {
-        //process.init(router)
+    initRightPriview(albumContainer, slidLabel) {
+        
+
         process.init()
 
         let transformX = albumContainer.width()
 
-        TweenMax.set(galleryList, {
-            x: this.data.windowW
-        })
-
-        this.galleryMaskEnter = TweenMax.to(galleryMask, 1, {
-            x: -transformX,
-            ease: Quad.easeInOut
-        })
-
-        TweenMax.set(galleryList, {
-            x: this.data.windowW
-        })
-
         //点击首页右侧商品跳转动画
         this.data.albumShowTranformX = (this.data.windowW / 2) - (transformX / 2) // list起始位置为中心
-
+        
         albumContainer.click(() => {
-            //if(router.canPush()) {
+                
                 this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX, () => {
                     process.show()
                 })
 
+                $('.home-body-bg').css({
+                    opacity: 0
+                })
 
                 TweenMax.set(slidLabel,{
+                    opacity: 0
+                })
+
+                
+
+                TweenMax.to($('.album-slideshow__label'), 0, {
                     opacity: 0
                 })
 
@@ -104,7 +97,12 @@ const main = {
                     TweenMax.to($(this.data.menuChild[i]), this.data.menuSliderTime, {
                         x: -this.data.homeMenuXlist[i],
                         delay: this.data.homeMenuDelay * i,
-                        ease: Quad.easeInOut
+                        ease: Quad.easeInOut,
+                        onComplete: () => {
+                            $('.home-button').css({
+                                'pointer-events': 'none'
+                            })
+                        }
                     })
                 }
 
@@ -123,15 +121,18 @@ const main = {
         })
     },
     renderAlbumStrip(data) {
-        console.log(data,'data')
-        let domWidth = $('.show').outerWidth(true)
+        let domWidth = $('.album-slideshow-container').outerWidth(true)
         let centerContainerWidth = 0
         
         let html =  ``
+        html += `<div class="album-strip">`
         data.forEach((item,index) => {
             centerContainerWidth += domWidth * 2 * index 
+            
+            
+
             html += `
-                <div class="album album-strip__album pink" style="left:${ domWidth * 2 * index }px; opacity: 1;">
+                <div class="album album-strip__album pink" style="width:${domWidth}px;left:${ domWidth * 2 * index }px; opacity: 1;">
                     <div class="album-strip__img">
                         <img src="${item.productImg}"></img>
                     </div>
@@ -142,12 +143,29 @@ const main = {
                 </div>
             `
         })
+        html += `</div>`
+
         $('.album-container').css({
             width: centerContainerWidth+'px'
         })
-        $('.album-strip').width(centerContainerWidth+'px').html(html)
+        $('.album-strip').width(centerContainerWidth+'px')
+        
+        $('.album-container').append(html)
+
+        
+        process.show()
+
+        TweenMax.set($('.album-strip__name'),{
+            x: 150,
+            opacity: 0
+        })
+
+        TweenMax.to($('.album-strip__name') ,1,{
+            x: 0,
+            opacity: 1
+        })
     },
-    menuButtonAndLogoInit(logo, menuButton) {
+    menuButtonAndLogoEnter(logo, menuButton) {
 
         this.logoWidth = logo.outerWidth(true)
 
@@ -161,15 +179,15 @@ const main = {
             x: this.menuButtonWidth + 28
         })
 
-        /* this.logoEnter =  TweenMax.to(logo, this.data.menuSliderTime, {
+        this.logoEnter =  TweenMax.to(logo, 1, {
             x: 0,
             ease: Quad.easeInOut
         }) 
 
-        this.menuButtonEnter  = TweenMax.to(menuButton, this.data.menuSliderTime, {
+        this.menuButtonEnter  = TweenMax.to(menuButton, 1, {
             x: 0,
             ease: Quad.easeInOut
-        }) */
+        })
 
     },
     HomeMenuEvent(parent, chlids, albumContainer, slidLabel, labelDom) {
@@ -218,9 +236,19 @@ const main = {
             })
         }
 
+        $('.home-button').css({
+            'pointer-events': 'auto'
+        })
+
         parent.click(e => {
+            TweenMax.set($('.album-slideshow__label'),{
+                opacity: 0
+            })
+            
             if (homeMenuIsMove) return
 
+            
+  
             homeMenuIsMove = true
 
             this.data.MenuHoverIndex = $(e.target).parent().index()
@@ -232,16 +260,22 @@ const main = {
                     x: -300
                 })
 
-                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX,()=>{
-                    process.show()
-                })
+                this.homeAlbumEnter = homeAlbum.enter(this.data.albumShowTranformX)
 
                 if (this.data.MenuHoverIndex === 0) { // 动画延迟从头开始
                     for (let i = 0; i <= len; i++) {
+                        
                         TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
                             x: -this.data.homeMenuXlist[i],
                             delay: this.data.homeMenuDelay * i,
-                            ease: Quad.easeInOut
+                            ease: Quad.easeInOut,
+                            onComplete: () => {
+                                homeMenuIsMove = false
+
+                                $('.home-button').css({
+                                    'pointer-events': 'none'
+                                })
+                            }
                         })
                     }
                 } else if (0 > this.data.MenuHoverIndex < len) { // 动画延迟从中间开始
@@ -280,24 +314,40 @@ const main = {
                         TweenMax.to(left[l], this.data.menuSliderTime, {
                             x: -leftXlist[l],
                             delay: this.data.homeMenuDelay * (l + 1),
-                            ease: Quad.easeInOut
+                            ease: Quad.easeInOut,
+                            onComplete: () => {
+                                homeMenuIsMove = false
+                                $('.home-button').css({
+                                    'pointer-events': 'none'
+                                })
+                            }
                         })
                     }
 
-                    homeMenuIsMove = true
+                    
 
                 } else if (this.data.MenuHoverIndex === len) { // 动画延迟从末尾开始
                     for (let i = len; i >= 0; i--) {
                         TweenMax.to($(chlids[i]), this.data.menuSliderTime, {
                             x: -this.data.homeMenuXlist[i],
                             delay: this.data.homeMenuDelay * Math.abs(i - len),
-                            ease: Quad.easeInOut
+                            ease: Quad.easeInOut,
+                            onComplete: () => {
+                                homeMenuIsMove = false
+
+                                $('.home-button').css({
+                                    'pointer-events': 'none'
+                                })
+                            }
                         })
                     }
                 }
+
+                
                 this.renderAlbumStrip(Details[this.data.MenuHoverIndex])
             //}
         })
+
         //菜单悬停切换右侧图片
         parent.mouseover((e) => {
             let index = $(e.target).parent('.home-button').index()
@@ -314,8 +364,10 @@ const main = {
 
             homeAlbum.hideLabel()
             homeAlbum.showLabel()
+            console.log(getTip(this.data.MenuHoverIndex))
 
-            slidLabel.html(getTip(this.data.MenuHoverIndex))
+
+            $('.album-slideshow__label').html(getTip(this.data.MenuHoverIndex))
         })
     },
     menuButtonEvent(menuButton, menuBg, menuPage, menuTxtBox, menuMask) {

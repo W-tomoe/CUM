@@ -13,7 +13,7 @@ const proccess = {
         this.$arrowLeft = $('.arrow-button--left')
         this.$arrowRight = $('.arrow-button--right')
         this.$backButton = $('.gallery-list-button')
-        this.$albumStrip = $('.album-strip')
+        
         this.$galleryList = $('.gallery-list')
         
 
@@ -25,12 +25,16 @@ const proccess = {
         this.$homeMenuChilds  = $('.home-button-text')
 
 
+        
+
+
         this.duration = 1
         this.delay = 0.05
         this.minDurarion = 0.5
-        this.currentSliderIndex = 1
+        this.currentSliderIndex = 0
         this.albumIsSlide = false
-        this.toggleBarLeftDesc = 2
+
+        this.isBacking = false
 
         this.initalProY =  parseInt( this.$proccess.css('top') ) + this.$proccess.outerHeight(true)
         this.initalArrow = parseInt( this.$arrowLeft.css('margin-top') )
@@ -55,55 +59,16 @@ const proccess = {
             ease:Quad.easeInOut
         })
 
-        TweenMax.set(this.$albumStrip,{
-            opacity: 0,
-            display:'block'
-        })
-
-
-        
-
-
-        setTimeout(()=>{
-            this.clickProccess()
-            this.clickArrowLeft()
-            this.clickArrowRight()
-            this.leave()
-        },20)
+    
+        this.clickProccess()
+        this.clickArrowLeft()
+        this.clickArrowRight()
+        this.leave()
     },
     show() {
-        this.chidsLen = this.$albumStrip.children().length
-        
+        window.showNavSlider = true
 
-        this.proccessWidth = this.$proccess.width()
-        this.proccessBarWidth = this.proccessWidth / this.chidsLen
-
-        this.$proccessBar.css({
-            width: this.proccessBarWidth + 'px'
-        })
-        
-
-        TweenMax.staggerTo([this.$arrowLeft, this.$arrowRight],this.duration,{
-            y:0,
-            ease:Quad.easeInOut
-        },this.delay)
-
-        TweenMax.to(this.$proccess,this.duration,{
-            y:0,
-            ease:Quad.easeInOut
-        })
-
-        TweenMax.set(this.$albumStrip,{
-            opacity: 1,
-            display: 'block'
-        })
-
-
-        TweenMax.to(this.$backButton,this.duration,{
-            y:0,
-            ease:Quad.easeInOut
-        })
-
+        this.$albumStrip = $('.album-strip')
         this.albumContainerArr = []
 
         let childs = this.$albumStrip.children()
@@ -112,21 +77,80 @@ const proccess = {
             this.albumContainerArr.push(parseInt( $(item).css('left') ) )
         })
 
+        this.chidsLen = this.$albumStrip.children().length
         
+
+        this.proccessWidth = this.$proccess.width()
+        this.proccessBarWidth = this.proccessWidth / this.chidsLen
+        this.toggleBarLeftDesc = this.chidsLen
+        this.$proccessBar.css({
+            width: this.proccessBarWidth + 'px'
+        })
+
+
+        TweenMax.set(this.$albumStrip,{
+            opacity: 1,
+            display: 'block'
+        })
+
+        TweenMax.to([this.$arrowLeft, this.$arrowRight],this.duration,{
+            y:0,
+            ease:Quad.easeInOut,
+            delay:  1
+        })
+
+        TweenMax.to(this.$backButton,this.duration,{
+            y:0,
+            ease:Quad.easeInOut,
+            delay:1
+        })
+
+        TweenMax.to(this.$proccess,this.duration,{
+            y:0,
+            ease:Quad.easeInOut,
+            delay:1
+        })
     },
     leave() {
         this.$backButton.click(() => {
+            console.log('enter')
+            if(this.isBacking) return
+            
+            this.isBacking = true
             this.homePageEnter()
+            
         })
-    },
-    navSliderEnter() {
-        
     },
     homePageEnter() {
         //this.$router.push('', '')
+
+        this.$arrowLeft.addClass('inactive')
+        this.$arrowRight.removeClass('inactive')
+        this.chidsLen = 0
+
+        TweenMax.to($('.album-strip__name') ,1,{
+            x: 150,
+            opacity: 0
+        })
+
+        TweenMax.set(this.$albumContainer ,{
+            x: 0
+        })
+
+        TweenMax.set(this.$proccessBar, {
+            x: 0
+        })
+
+        this.currentSliderIndex = 0
+        
         TweenMax.to([this.$arrowLeft, this.$arrowRight],this.minDurarion,{
             y:-this.initalArrow,
-            ease:Quad.easeInOut
+            ease:Quad.easeInOut,
+            onComplete:() => {
+                $('.album-slideshow__label').css({
+                    opacity:1
+                })
+            }
         })
 
         TweenMax.to(this.$proccess,this.minDurarion,{
@@ -161,12 +185,13 @@ const proccess = {
             ease:Quad.easeInOut,
             delay:this.minDurarion,
             onComplete:(() =>{
+                this.isBacking = false
                 
                 this.$albumShowSlider.css({
                     display:'block'
                 })
                 this.$albumContainer.css({
-                    width: this.$albumShowSlider.width()
+                    width: this.$albumCenterBox.width()
                 })
 
                 this.$albumStrip.css({
@@ -174,6 +199,8 @@ const proccess = {
                     display:'none',
                     width: 0
                 })
+
+                $('.album-strip').remove()
                 
                 let len = this.$homeMenuChilds.length
 
@@ -181,7 +208,12 @@ const proccess = {
                     TweenMax.to($(this.$homeMenuChilds[i]), this.duration, {
                         x: 0,
                         delay: this.delay * i,
-                        ease: Quad.easeInOut
+                        ease: Quad.easeInOut,
+                        onComplete:() =>{
+                            $('.home-button').css({
+                                'pointer-events': 'auto'
+                            })
+                        }
                     })
                 }
 
@@ -190,20 +222,35 @@ const proccess = {
                     ease: Quad.easeInOut,
                     delay: this.minDurarion,
                     onComplete:() => {
-                        TweenMax.to(this.$albumMask,this.duration ,{
-                            x:- this.$albumShowSlider.width(),
-                            ease:Quad.easeInOut,
+                        TweenMax.set($('.home-body-bg'),{
+                            x: -('.home-body-bg').width
                         })
+
+                        
+       
+
+                        if($('.body').width()-($('.home-button').outerWidth(true)+$('.album-slideshow-container').width()) <  50) {
+
+                        }else {
+                            TweenMax.to(this.$albumMask,this.duration ,{
+                                x:- $('.album-slideshow-container').width(),
+                                ease:Quad.easeInOut,
+                                onComplete: () => {
+                                    TweenMax.to($('.home-body-bg'),1,{
+                                        x: 0,
+                                        opacity: 0.3
+                                    })
+                                }
+                            })
+                        }
                     }
                 })
             })
         })
     },
     clickProccess() {
-        
 
         this.$proccess.click(e => {
-            console.log(document.getElementsByClassName('progress-track')[0].getBoundingClientRect())
             let scrollLeft = document.getElementsByClassName('progress-track')[0].getBoundingClientRect().x
             let clickPX = e.clientX - scrollLeft
             let positionArr = []
@@ -220,8 +267,7 @@ const proccess = {
                 }
             }
             
-
-            
+            this.currentSliderIndex = clickIndex
 
             TweenMax.to(this.$proccessBar, 1, {
                 x: positionArr[clickIndex],
@@ -258,46 +304,51 @@ const proccess = {
                 x: this.proccessBarWidth * index,
                 ease:Quad.easeInOut,
                 onComplete:() => {
-                    console.log(this.proccessWidth - (this.proccessBarWidth * this.toggleBarLeftDesc),'1234')
+                    //console.log(this.proccessWidth - (this.proccessBarWidth * this.toggleBarLeftDesc),'1234')
 
                 }
             })
 
 
         }else {
+
             TweenMax.to(this.$proccessBar, 1 ,{
-                x: this.proccessWidth - (this.proccessBarWidth * this.toggleBarLeftDesc),
+                x: this.proccessWidth - (this.proccessBarWidth * (this.chidsLen - this.currentSliderIndex)),
                 ease:Quad.easeInOut,
                 onComplete:() => {
-                    console.log(this.proccessWidth - (this.proccessBarWidth * this.toggleBarLeftDesc),'1234')
-                    return this.toggleBarLeftDesc =  this.toggleBarLeftDesc + 1
+                    //console.log(this.proccessWidth - (this.proccessBarWidth * this.toggleBarLeftDesc),'1234')
+                    //return this.toggleBarLeftDesc =  this.toggleBarLeftDesc + 1
                 }
             })
         }
     },
     clickArrowLeft() {
         this.$arrowLeft.click((e) => {    
+        
 
-            if(this.currentSliderIndex > 1) {
+
+            if(this.chidsLen,this.currentSliderIndex  >= 1 && this.currentSliderIndex <= this.chidsLen - 1) {
                 if(this.albumIsSlide) return
-                console.log(this.currentSliderIndex,'clickArrowLeft')
+                
                 this.albumIsSlide = true
-
+                this.toggleBarLeftDesc = this.toggleBarLeftDesc + 1 
+                this.currentSliderIndex = this.currentSliderIndex - 1
+                
                 this.toggleProcessBar(this.currentSliderIndex,'left')
-
-                let transformX = parseInt( this.$albumStrip.children().eq(this.currentSliderIndex - 2).css('left') ) 
+                console.log(this.currentSliderIndex,this.chidsLen,'left')
 
                 this.albumLeftSlider = TweenMax.to(this.$albumContainer,1,{
-                    x: -transformX,
+                    x: -this.albumContainerArr[this.currentSliderIndex],
                     ease:Quad.easeInOut,
                     onComplete: () => {
-                        if(this.currentSliderIndex == 2){
-                            this.toggleBarLeftDesc = 2
+                        
+                        if(this.currentSliderIndex == 0){
                             this.$arrowLeft.addClass('inactive')
-                        }else if(this.currentSliderIndex == 6){
                             this.$arrowRight.removeClass('inactive')
+                        }else if(this.currentSliderIndex){
+                            
                         }
-                        return this.currentSliderIndex = this.currentSliderIndex - 1,this.albumIsSlide = false
+                        return this.albumIsSlide = false
                     }
                 })
             }
@@ -306,26 +357,32 @@ const proccess = {
     },
     clickArrowRight() {
         this.$arrowRight.click((e) => {
-
-            if(this.currentSliderIndex < this.chidsLen) {
+            console.log(this.currentSliderIndex , this.chidsLen,'arrowRight')
+            if(this.currentSliderIndex < this.chidsLen - 1) {
                 if(this.albumIsSlide) return
-                console.log(this.currentSliderIndex,'clickArrowRight')
+                this.toggleBarLeftDesc = this.toggleBarLeftDesc  - 1
+                this.currentSliderIndex = this.currentSliderIndex + 1
                 this.toggleProcessBar(this.currentSliderIndex,'right')
+                console.log(this.currentSliderIndex,'clickArrowRight')
                 this.albumIsSlide = true
 
-                let transformX = parseInt( this.$albumStrip.children().eq(this.currentSliderIndex).css('left') ) 
+                let transformX = parseInt( $('.album-strip__album').eq(this.currentSliderIndex).css('left') ) 
+
 
                 this.albumLeftSlider = TweenMax.to(this.$albumContainer,1,{
-                    //webkitTransform: `translate3d(${-transformX}px,0,0)`,
-                    x: -transformX,
+                    x: -this.albumContainerArr[this.currentSliderIndex],
                     ease:Quad.easeInOut,
                     onComplete: () => {
                         if(this.currentSliderIndex == 1 ) {
                             this.$arrowLeft.removeClass('inactive')
+                            
                         }else if(this.currentSliderIndex == this.chidsLen -1){
                             this.$arrowRight.addClass('inactive')
+                            /* this.$arrowRight.addClass('inactive').css({
+                                'pointer-events': "none"
+                            }) */
                         }
-                        return this.currentSliderIndex = this.currentSliderIndex + 1,this.albumIsSlide = false
+                        return this.albumIsSlide = false
                     }
                 })
             }

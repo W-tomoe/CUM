@@ -47,6 +47,11 @@ let  homeAlbum =  {
             ease:Quad.easeInOut
         })
 
+        $('.album-strip').css({
+            display:'block'
+        })
+
+        window.showNavSlider = false
     }
 }
 
