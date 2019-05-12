@@ -59,7 +59,7 @@ module.exports = {
             '@': path.resolve(__dirname, '../src')
         }
     },// 提取公共代码
-    optimization: {
+    /* optimization: {
         splitChunks: {
             cacheGroups: {
                 vendor: {   // 抽离第三方插件
@@ -71,7 +71,7 @@ module.exports = {
                 }
             }
         }
-    },
+    }, */
     plugins: [//静态资源输出
         new copyWebpackPlugin([{
             from: path.resolve(__dirname, "../src/assets"),
@@ -79,9 +79,12 @@ module.exports = {
             ignore: ['.*']
         }]),
         // 消除冗余的css代码
-        new purifyCssWebpack({
-            paths: glob.sync(path.join(__dirname, "../src/pages/*/*.html"))
-        }),
+        //new purifyCssWebpack({
+        //    paths: glob.sync(path.join(__dirname, "../src/pages/*/*.html"))
+        //}),
+        new webpack.ProvidePlugin({
+            $: 'jquery'
+        })
 
     ]
 }

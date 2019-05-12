@@ -16,16 +16,16 @@ const rules = [
         ]
     },
     {
-        test: /\.(jpg|png|gif)$/,
+        /* test: /\.(jpg|png|gif)$/,
         use: {
             loader: 'url-loader',
             options: {
                 name: '[name].[ext]',
-                outputPath: 'images/',
-                publichPath: '../images',
+                publicPath: '../../images',
+                useRelativePath: true,
                 limit: 10240
             }
-        }
+        } */
     },
     {
         test: /\.(eot|ttf|svg|woff)$/,

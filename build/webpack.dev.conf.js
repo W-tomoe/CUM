@@ -18,7 +18,7 @@ const webpackConfigDev = {
         overlay: true, // 浏览器页面上显示错误
         // open: true, // 开启浏览器
         // stats: "errors-only", //stats: "errors-only"表示只打印错误：
-        hot: true, // 开启热更新
+        //hot: true, // 开启热更新
         //服务器代理配置项
         proxy: {
             '/test/*':{
@@ -34,11 +34,9 @@ const webpackConfigDev = {
         
         new webpack.DefinePlugin({
             'process.env.BASE_URL': '\"' + process.env.BASE_URL + '\"'
-        }),
-
-        new webpack.ProvidePlugin({
-            $: 'jquery'
         })
+
+        
           
     ],
     devtool: "source-map",  // 开启调试模式

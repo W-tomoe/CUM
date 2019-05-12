@@ -1,6 +1,5 @@
 
 import homeAlbum from './homeAlbum.js'
-//import UrlManger from './UrlManger.js'
 
 import Details from '../../assets/js/data.js'
 
@@ -24,6 +23,16 @@ const menuMap = [
     'SO',
     'LA',
     'TI',
+]
+
+const menuHoverTip = [
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
+    'Vision,Mission,&Christians Morality',
 ]
 
 let getTip = function (index) {
@@ -127,12 +136,10 @@ const main = {
         let html =  ``
         html += `<div class="album-strip">`
         data.forEach((item,index) => {
-            centerContainerWidth += domWidth * 2 * index 
+            centerContainerWidth = domWidth * 1.2 * index 
             
-            
-
             html += `
-                <div class="album album-strip__album pink" style="width:${domWidth}px;left:${ domWidth * 2 * index }px; opacity: 1;">
+                <div class="album album-strip__album pink" style="width:${domWidth}px;left:${ domWidth * 1.2 * index }px; opacity: 1;">
                     <div class="album-strip__img">
                         <img src="${item.productImg}"></img>
                     </div>
@@ -224,7 +231,10 @@ const main = {
 
         for (let i = 0; i <= len; i++) {
             TweenMax.set($(chlids[i]), {
-                x: -this.data.homeMenuXlist[i]
+                x: -this.data.homeMenuXlist[i],
+                onComplete:() => {
+                    $('.home-button-text').addClass('overlay__active')
+                }
             })
         }
 
@@ -241,6 +251,14 @@ const main = {
         })
 
         parent.click(e => {
+            $('.home-body-bg').css({
+                opacity: 0
+            })
+
+            $('.overlay').css({
+                opacity: 0
+            })
+
             TweenMax.set($('.album-slideshow__label'),{
                 opacity: 0
             })
@@ -338,12 +356,13 @@ const main = {
                                 $('.home-button').css({
                                     'pointer-events': 'none'
                                 })
+
+                                $()
                             }
                         })
                     }
                 }
 
-                
                 this.renderAlbumStrip(Details[this.data.MenuHoverIndex])
             //}
         })
@@ -352,6 +371,12 @@ const main = {
         parent.mouseover((e) => {
             let index = $(e.target).parent('.home-button').index()
             this.data.MenuHoverIndex = index > 0 ? index : 0
+
+
+            if($(e.target).hasClass('home-button-text') && $(e.target).find('.overlay').length == 0) {
+                let overlayHtml = `<div class="overlay">${menuHoverTip[this.data.MenuHoverIndex ]}</div>`
+                $(e.target).append(overlayHtml)
+            }
 
             if (this.data.MenuHoverIndex < 0) return
             albumContainer
@@ -435,6 +460,7 @@ const main = {
         // 点击按钮打开菜单
         menuButton.click(() => {
             if (menuIsMove) return
+            
 
             this.setData({
                 showMenu: !this.data.showMenu
@@ -443,10 +469,14 @@ const main = {
             menuIsMove = true
 
             if (this.data.showMenu) {
-                
+                window.showMenuPage = true
+
                 menuButton.children('.menu-button__line ').css({
                     'background-color': '#fff'
                 })
+
+                TweenMax.set([$('.home-list')], {'z-index':-1});
+
 
 
                 TweenMax.to(menuMask, this.data.MenuTime,{
@@ -488,6 +518,10 @@ const main = {
                     'pointer-events': 'auto'
                 })
             } else {
+                window.showMenuPage = false
+
+
+                TweenMax.to([$('.home-list')],1,{'z-index':1});
 
                 TweenMax.to(menuMask, 1, {
                     opacity: 0,
@@ -520,7 +554,14 @@ const main = {
                     menuPage.css({
                         display: 'none'
                     })
+
+                    
                 }, 1000)
+
+                /* TweenMax.to($('.home-list'), 1, {
+                    opacity: 1,
+                    delay: 1,
+                }) */
 
                 TweenMax.to(menuTxtBox, 1, {
                     opacity: 0,

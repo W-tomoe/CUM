@@ -10,8 +10,8 @@ import {
 let  mainImg = {
     height:680,
     width:1100,
-    offsetTop: 80,
-    offsetBottom: 150
+    offsetTop: 150,
+    offsetBottom: 200
 }
 
 
@@ -108,17 +108,12 @@ let page = {
             let html = document.documentElement;
             let wH = that.wH = html.clientHeight; // 窗口宽度
             let wW = that.wW = html.clientWidth;
+
             //rem单位
             let designSize = 1920; // 设计图尺寸
 
             let rem = wW * 100 / designSize;
-            document.documentElement.style.fontSize = rem + 'px';
-
-            $('.body').css({
-                width:wW,
-                height:wH
-            })
-            
+            document.documentElement.style.fontSize = rem + 'px'; 
         }
         
 
@@ -127,18 +122,13 @@ let page = {
         const that = this
         // dom极端
 
-        $('.body').css({
-            width:that.wW,
-            height:that.wH
-        })
-
         that.$menuDom.css({
             fontSize: that.wH * 0.13 + 'px'
         })
 
 
         that.$labelDom.css({
-            top: that.wH * 0.5 * 1.6 + 'px'
+            top: that.wH * 0.5 * 1.7 + 'px'
         })
 
 
@@ -162,6 +152,12 @@ let page = {
                 mainImg.offsetTop = (that.wH - (resizeMainH )) / 2
             }
             
+            if(that.wH <= 414 &&  that.wW > 414) {
+                mainImg.offsetTop = 65
+
+                
+            }
+            
             $('.album-container').css({
                 height: mainImg.height + 'px',
                 top: mainImg.offsetTop  + 'px',
@@ -174,10 +170,14 @@ let page = {
 
             $('.album-container').css({
                 height: resizeMainH + 'px',
-                top: 100 + 'px',
+                top: mainImg.offsetTop + 'px',
                 width: 14400 + 'px'
             })
         }
+
+        window.resizeMainH = resizeMainH
+
+        window.resizeMainW = resizeMainW
 
         
 
@@ -195,7 +195,11 @@ let page = {
         $.each($('.album-strip__album'),(index,item) => {
 
             $(item).css({
-                left:resizeMainW*index*2
+                left:resizeMainW*index * 1.2
+            })
+
+            $('.album-container').css({
+                width: resizeMainW*index * 1.2
             })
         })
 
@@ -236,31 +240,82 @@ let page = {
     
             if((that.wW - (resizeMainW + menuWidth)) < 50) {
                 if(that.wW <= 1460) {
-                    TweenMax.set(that.$galleryMask,{
+                    TweenMax.to(that.$galleryMask,1,{
                         x: - 600,
                         ease: Quad.easeInOut
                     })
                 }
     
                 if(that.wW <= 786) {
-                    TweenMax.set(that.$galleryMask,{
+                    TweenMax.to(that.$galleryMask,1,{
                         x: - 400,
                         ease: Quad.easeInOut
                     })
                 }
     
                 if(that.wW <= 414) {
-                    TweenMax.set(that.$galleryMask,{
+                    TweenMax.to(that.$galleryMask,1,{
                         x: 0,
                         ease: Quad.easeInOut
                     })
                 }
     
             }else {
-                TweenMax.set(that.$galleryMask,{
+                TweenMax.to(that.$galleryMask,1,{
                     x: - resizeMainW,
                     ease: Quad.easeInOut
                 })
+            }
+
+            
+            if(window.showNavSlider) {
+
+            
+                let index = window.currentSliderIndex
+        
+
+                console.log($('.album-strip__album').eq(index).left,'left')
+
+                TweenMax.to(that.$galleryMask,1,{
+                    x: - $('.album-strip__album').eq(index).left,
+                    ease: Quad.easeInOut
+                })
+            }
+        }
+
+        $('.arrow-button--right').css({
+            top: that.wH + 'px'
+        })
+        $('.arrow-button--left').css({
+            top: that.wH + 'px'
+        })
+    },
+    homeTouchEvent() {
+        let touchDom = document.getElementsByClassName('body')[0]
+
+        touchDom.addEventListener('touchstart', onTouchStart, false);
+
+        touchDom.addEventListener('touchmove', onTouchMove, false);
+
+        touchDom.addEventListener('touchend', onTouchEnd, false);
+
+
+        function onTouchStart(e) {
+            touchStartX = e.touches[0].clientX
+            touchStartY = e.touches[0].clientY
+        }
+
+        function onTouchMove(e) {
+            if(!window.showNavSlider)  return
+            
+            touchEndX = e.touches[0].clientX
+            touchEndY = e.touches[0].clientY
+
+            let touchX = Math.abs( touchEndX - touchStartX )
+            let touchY = Math.abs( touchEndY - touchStartY )
+
+            if( touchX >  touchY) {
+                e.preventDefault();
             }
         }
     }

@@ -20,7 +20,7 @@ const webpackConfigProd = {
         filename: './js/[name].[hash].js',
         publicPath: './'
     },
-    devtool: 'cheap-module-eval-source-map',
+    //devtool: 'cheap-module-eval-source-map',
     plugins: [
         //删除dist目录
         new cleanWebpackPlugin({
@@ -39,13 +39,13 @@ const webpackConfigProd = {
             filename: 'assets/css/app.[contenthash:8].css'
         }),
         //压缩css
-        new OptimizeCSSPlugin({
+        /* new OptimizeCSSPlugin({
             cssProcessorOptions: {
                 safe: true
             }
-        }),
+        }), */
         //上线压缩 去除console等信息webpack4.x之后去除了webpack.optimize.UglifyJsPlugin
-        new UglifyJSPlugin({
+        /* new UglifyJSPlugin({
             uglifyOptions: {
                 compress: {
                     warnings: false,
@@ -53,7 +53,7 @@ const webpackConfigProd = {
                     drop_console: true
                 }
             }
-        })
+        }) */
     ],
     module: {
         rules: [
